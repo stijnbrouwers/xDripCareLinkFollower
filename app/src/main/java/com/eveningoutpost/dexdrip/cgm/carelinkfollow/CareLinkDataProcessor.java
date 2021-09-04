@@ -107,8 +107,7 @@ public class CareLinkDataProcessor {
             filteredSgList = new ArrayList<>();
             for (SensorGlucose sg : recentData.sgs) {
                 if (sg != null) {
-                    if (sg.datetime != null) {
-                        filteredSgList.add(sg);
+                    if (sg.datetime != null) { filteredSgList.add(sg);
                     } else {
                         //UserError.Log.d(TAG, "SG DateTime is null (sensor expired?)");
                     }
@@ -119,7 +118,7 @@ public class CareLinkDataProcessor {
             // place in order of oldest first
             Collections.sort(filteredSgList, (o1, o2) -> o1.datetime.compareTo(o2.datetime));
 
-            for (final SensorGlucose sg : filteredSgList) {
+            /*for (final SensorGlucose sg : filteredSgList) {
 
                 //Not NULL SG (shouldn't happen?!)
                 if (sg != null) {
@@ -183,7 +182,7 @@ public class CareLinkDataProcessor {
                 } else {
                     //UserError.Log.d(TAG, "SG Entry is null!!!");
                 }
-            }
+            }*/
 
         } else {
             UserError.Log.d(TAG, "Recent data SGs is null!");
