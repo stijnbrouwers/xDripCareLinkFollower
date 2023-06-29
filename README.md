@@ -1,31 +1,28 @@
 # xDrip+ CareLink Follower
 > Experimental Medtronic CareLink Follower data source for xDrip+
 
-Medtronic CareLink Follower data source for xDrip+ to retrieve data from Medtronic CareLink of online CGM and insulin pump device data uploads (Guardian Connect, MiniMed 7xxG) inside and outside of US. Originally it was started as a Medtronic Guardian Connect data source for xDrip+ as an alternative for the Nightscout MiniMed Connect, because Medtronic started to block requests from Heroku. Later it turned out that the core Nightscout MiniMed Connect logic can be also used for 7xxG pumps with some modifications based on the US online CareLink Connect webapp (770G is still working). The US data retrieval logic was also working outside the US with the 780G pumps too, although the online CareLink Connect webapp outside US doesn't support the new generation pumps. Finally the code was extended to handle the 7xxG devices too both inside and outside the US.
+Medtronic CareLink Follower data source for xDrip+ to retrieve data from Medtronic CareLink of online standalone CGM and insulin pump device data uploads (Guardian CGM and MiniMed 7xxG insulin pumps) inside and outside of US.
 
-I have created a separate repository containing only the communication
-with CareLink: [CareLinkJavaClient](https://github.com/benceszasz/CareLinkJavaClient)
-
-## Status
-The development is currently in a **very early stage!**
+There is also a separate repository containing only the communication
+with CareLink in Java:
+[CareLinkJavaClient](https://github.com/benceszasz/CareLinkJavaClient)
 
 ## Supported devices
-- Medtronic Guardian Connect CGM
-- Medtronic MiniMed 770G pump
-- Medtronic MiniMed 780G pump
-- Other Medtronic MiniMed 7xxG pumps ???
+- Medtronic standalone CGMs (Guardian Connect (Enlite, Guardian 3) and Guardian (Guardian 4)) 
+- Medtronic MiniMed 7XXG insulin pumps (740G, 770G, 780G)
 
 ## Features
-Download data from CareLink:
+Download from CareLink and display in xDrip:
 - SG readings
-- Insulin treatments (bolus and auto correction)
-- Meals
+- Insulin treatments: bolus and auto correction (only for pumps!)
+- Meals (only for pumps!)
 - Finger BGs
 - Notifications
 - Sensor status information (next calibration, remain lifetime)
 - Pump status information (IOB, reservoir, battery) 
+- Maximum Auto Basal (auto basal limit)
 
-Upload data to Nightscout using xDrip built-in Nightscout Sync feature:
+Upload to Nightscout using xDrip built-in Nightscout Sync feature:
 - SG readings
 - Insulin treatments (bolus and auto correction)
 - Meals
@@ -34,22 +31,19 @@ Upload data to Nightscout using xDrip built-in Nightscout Sync feature:
  
 ## Limitations
 - **CareLink MFA is not supported!!!**
-- Nofitication texts are currently always in English
-
+- Notification texts are currently always in English
+- Treatments of Guardian Connect and Guardian apps are not supported in xDrip, because
+  these are just simple markers for CareLink followers, required details
+  are missing (no insulin amount, no carb amount)
 
 ## Requirements
-- Suitable CareLink account **with MFA DISABLED**:
-    - Guardian Connect CGM outside US: patient or care partner account
-    - Guardian Connect CGM inside US: **not tested yet!** (possibly a care partner account)
-    - 7xxG pump outside US: care partner account (same as for Medtronic CareLink Connect app)
-  -   7xxG pump inside US: care partner account (same as for Medtronic
-      CareLink Connect app)
+- CareLink Patient or Care Partner account **with MFA DISABLED**
 
 ## How to use it
 - Download and install [latest release](https://github.com/benceszasz/xDripCareLinkFollower/releases)
 - Configure CareLink Follower:
   - Select CareLink Follower for data source
-  - Set CareLink username, password and country
+  - Set CareLink country, username, password and patient username if using a care partner account with multiple patients
   - Select required data types: Finger BGs, Boluses, Meals,
     Notifications
   - If needed change grace period (wait after last sensor + 5 mins)
@@ -62,6 +56,12 @@ Upload data to Nightscout using xDrip built-in Nightscout Sync feature:
     status line > External Status)
 - If needed configure upload to Nightscout (Settings > Cloud
   Upload > Nightscout Sync), but **disable download data!**
+
+## xDrip+ Logging
+xDrip+ TAGs used for logging:
+- CareLinkFollow : logs of CareLink Follower service
+- CareLinkFollowDL : logs of CareLink data downloader
+- CareLinkFollowDP : logs of CareLink data processor
 
 ## Credits
 - CareLink data download core logic is based on the

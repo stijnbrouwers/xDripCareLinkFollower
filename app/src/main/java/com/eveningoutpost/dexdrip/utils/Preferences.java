@@ -103,6 +103,7 @@ import com.eveningoutpost.dexdrip.watch.thinjam.BlueJay;
 import com.eveningoutpost.dexdrip.watch.thinjam.BlueJayAdapter;
 import com.eveningoutpost.dexdrip.watch.thinjam.BlueJayEntry;
 import com.eveningoutpost.dexdrip.wearintegration.Amazfitservice;
+import com.eveningoutpost.dexdrip.Services.broadcastservice.BroadcastService;
 import com.eveningoutpost.dexdrip.wearintegration.WatchUpdaterService;
 import com.eveningoutpost.dexdrip.webservices.XdripWebService;
 import com.eveningoutpost.dexdrip.xDripWidget;
@@ -448,6 +449,7 @@ public class Preferences extends BasePreferenceActivity implements SearchPrefere
         }
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(LeFunEntry.prefListener);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(MiBandEntry.prefListener);
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(BroadcastService.prefListener);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(BlueJayEntry.prefListener);
         LocalBroadcastManager.getInstance(this).registerReceiver(mibandStatusReceiver,
                 new IntentFilter(Intents.PREFERENCE_INTENT));
@@ -459,6 +461,7 @@ public class Preferences extends BasePreferenceActivity implements SearchPrefere
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(ActivityRecognizedService.prefListener);
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(LeFunEntry.prefListener);
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(MiBandEntry.prefListener);
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(BroadcastService.prefListener);
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(BlueJayEntry.prefListener);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mibandStatusReceiver);
         pFragment = null;
@@ -1193,6 +1196,7 @@ public class Preferences extends BasePreferenceActivity implements SearchPrefere
             final Preference carelinkFollowUser = findPreference("clfollow_user");
             final Preference carelinkFollowPass = findPreference("clfollow_pass");
             final Preference carelinkFollowCountry = findPreference("clfollow_country");
+            final Preference carelinkFollowPatient = findPreference("clfollow_patient");
             final Preference carelinkFollowGracePeriod = findPreference("clfollow_grace_period");
             final Preference carelinkFollowPollInterval = findPreference("clfollow_poll_interval");
             final Preference carelinkFollowDownloadFingerBGs = findPreference("clfollow_download_finger_bgs");
@@ -1204,6 +1208,7 @@ public class Preferences extends BasePreferenceActivity implements SearchPrefere
                 collectionCategory.addPreference(carelinkFollowUser);
                 collectionCategory.addPreference(carelinkFollowPass);
                 collectionCategory.addPreference(carelinkFollowCountry);
+                collectionCategory.addPreference(carelinkFollowPatient);
                 collectionCategory.addPreference(carelinkFollowGracePeriod);
                 collectionCategory.addPreference(carelinkFollowPollInterval);
                 collectionCategory.addPreference(carelinkFollowDownloadFingerBGs);
@@ -1224,6 +1229,7 @@ public class Preferences extends BasePreferenceActivity implements SearchPrefere
                     carelinkFollowUser.setOnPreferenceChangeListener(carelinkFollowListener);
                     carelinkFollowPass.setOnPreferenceChangeListener(carelinkFollowListener);
                     carelinkFollowCountry.setOnPreferenceChangeListener(carelinkFollowListener);
+                    carelinkFollowPatient.setOnPreferenceChangeListener(carelinkFollowListener);
                     carelinkFollowGracePeriod.setOnPreferenceChangeListener(carelinkFollowListener);
                     carelinkFollowPollInterval.setOnPreferenceChangeListener(carelinkFollowListener);
                     //carelinkFollowDownloadFingerBGs.setOnPreferenceChangeListener(carelinkFollowListener);
@@ -1239,6 +1245,7 @@ public class Preferences extends BasePreferenceActivity implements SearchPrefere
                     collectionCategory.removePreference(carelinkFollowUser);
                     collectionCategory.removePreference(carelinkFollowPass);
                     collectionCategory.removePreference(carelinkFollowCountry);
+                    collectionCategory.removePreference(carelinkFollowPatient);
                     collectionCategory.removePreference(carelinkFollowGracePeriod);
                     collectionCategory.removePreference(carelinkFollowPollInterval);
                     collectionCategory.removePreference(carelinkFollowDownloadFingerBGs);
@@ -1579,6 +1586,7 @@ public class Preferences extends BasePreferenceActivity implements SearchPrefere
             if (collectionType != DexCollectionType.CLFollow) {
                 try {
                     collectionCategory.removePreference(carelinkFollowCountry);
+                    collectionCategory.removePreference(carelinkFollowPatient);
                     collectionCategory.removePreference(carelinkFollowPass);
                     collectionCategory.removePreference(carelinkFollowUser);
                     collectionCategory.removePreference(carelinkFollowGracePeriod);
